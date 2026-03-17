@@ -1,27 +1,28 @@
 hero:
   tagline: "The wedding of"
-  title: "said yes!"
+  title: "Brian & Elizabeth"
   description: >
     An editorial soirée in the heart of the city — bold florals, late-night vinyl,
     and a guest list filled with our favorite people. Come for the vows, stay for
     the midnight espresso martinis.
   weekday: "Saturday"
-  dateDisplay: "21 · 06 · 2026"
-  location: "Mexico City • La Casa Azul"
+  dateDisplay: "10 · 10 · 2026"
+  location: "Louisville, KY • USA"
 
 story:
   chapterLabel: "Chapter One"
   heading: "Our Story"
   body: |
     We met on a crisp autumn afternoon, when a simple conversation blossomed into an inseparable friendship.
+
     Over time, that friendship grew into love, and together we've shared adventures, dreams, and challenges.
+
     Today, we celebrate not only our love, but also the family and friends who have joined us on this journey.
   imageAsset: "wedshots/vadim-paripa-unsplash.jpg"
   imageAlt: "Our story together"
   highlights:
-    - "💌 From friends to soulmates"
-    - "✈️ Adventures across continents"
-    - "💍 Engaged under autumn skies"
+    - "🥒 From partners to soulmates"
+    - "🏝️ Engaged at the beach"
 
 schedule:
   eyebrow: "Our Celebration"
@@ -111,5 +112,5 @@ countdown:
   heading: 'Countdown to "We Do"'
   message: >
     Every sunrise brings us closer to the moment we gather together. Save the date and get ready for an unforgettable celebration.
-  target: "2026-06-21T21:00:00Z"
-  location: "Mexico City • La Casa Azul"
+  target: "2026-10-10T21:00:00Z"
+  location: "Louisville, KY • USA"
