@@ -2,9 +2,7 @@ hero:
   tagline: "The wedding of"
   title: "Brian & Elizabeth"
   description: >
-    An editorial soirée in the heart of the city — bold florals, late-night vinyl,
-    and a guest list filled with our favorite people. Come for the vows, stay for
-    the midnight espresso martinis.
+    A moody October gala in the city we call home — good food, music, and a room full of the people who shaped us.
   weekday: "Saturday"
   dateDisplay: "10 · 10 · 2026"
   location: "Louisville, KY • USA"
@@ -13,12 +11,14 @@ story:
   chapterLabel: "Chapter One"
   heading: "Our Story"
   body: |
-    We met on a crisp autumn afternoon, when a simple conversation blossomed into an inseparable friendship.
+    We met in the summer of 2024 on the pickleball court. What began as a friendly competition slowly developed into something much more.
 
-    Over time, that friendship grew into love, and together we've shared adventures, dreams, and challenges.
+    As we spent more time together, we discovered a shared love for adventure, food, and good coffee—exploring new cities on foot, by bike, or on scooters, trying new restaurants, and finding cute coffee shops in different towns.
 
-    Today, we celebrate not only our love, but also the family and friends who have joined us on this journey.
-  imageAsset: "wedshots/vadim-paripa-unsplash.jpg"
+    All these small adventures led to one of the biggest adventures yet. In the summer of 2025, after a beautiful week in Destin, Florida, Brian popped the question on the beach at sunset. Liz, of course, said yes, which brings us to where we are today.
+
+    Now, we are embarking on the biggest adventure of them all: marriage. We look forward to the journey ahead as husband and wife and forever pickleball partners.
+  imageAsset: "wedshots/our-story.jpg"
   imageAlt: "Our story together"
   highlights:
     - "🥒 From partners to soulmates"
