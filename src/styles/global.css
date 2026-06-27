@@ -94,7 +94,9 @@
   }
 
   .card {
-    border: 1px solid color-mix(in srgb, var(--color-accent), transparent 40%);
+    /* border: 1px solid color-mix(in srgb, var(--color-accent), transparent 40%); */
+    background: var(--color-background-light);
+    /* border: 2px solid white; */
     box-shadow: var(--shadow-card);
     backdrop-filter: blur(6px);
     transition:

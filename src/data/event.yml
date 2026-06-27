@@ -91,7 +91,7 @@ gallery:
 cards:
   - imageAlt: "RSVP"
     title: "RSVP"
-    description: "Let us know if you’ll be joining our special day!"
+    description: "Let us know if you’ll be joining our special day! No later than Sep. 10th please!"
     href: "/rsvp"
   - imageAlt: "Wishlist"
     title: "Wishlist"
