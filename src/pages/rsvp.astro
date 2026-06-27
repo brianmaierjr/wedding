@@ -11,7 +11,8 @@ import Layout from "../layouts/Layout.astro";
                 Please let us know if you can join us for our special day.
             </p>
 
-            <form class="rsvp-form" data-netlify="true" method="POST" name="rsvp">
+            <form class="rsvp-form" data-netlify="true" method="POST" name="rsvp" >
+                <input type="hidden" name="subject" value="New RSVP from %{formName}" />
                 <label>
                     Full name
                     <input type="text" name="name" placeholder="Your name" required />
