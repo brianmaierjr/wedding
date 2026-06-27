@@ -32,22 +32,13 @@ schedule:
   events:
     - number: "01"
       label: "Ceremony"
-      title: "Ceremony & Vows"
+      title: "Ceremony"
       description: >
-        Gather on the chapel lawn for an intimate ceremony beneath the olive trees. Ushers are ready to guide you to your seat.
+        Gather at the church for an intimate ceremony.
       details:
-        - "Prelude music begins at 3:40 PM"
-        - "Rings & vows at golden hour"
-        - "Quiet shuttle service begins at 3:15 PM"
-    - number: "02"
-      label: "Welcome"
-      title: "Garden Cocktail Hour"
-      description: >
-        Sip seasonal cocktails, enjoy live jazz, and mingle beneath the café lights as we transition into the celebration.
-      details:
-        - "Signature drink: Lavender Paloma"
-        - "String trio taking requests"
-        - "Canapés served throughout the garden"
+        - "Guests seated by 4 PM"
+        - "Ceremony begins at 4:30 PM"
+        - "Travel to the reception — 10 minutes"
     - number: "03"
       label: "Dinner"
       title: "Candlelit Reception"

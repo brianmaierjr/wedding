@@ -1,0 +1,147 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="RSVP | Said Yes">
+    <main class="rsvp-page">
+        <section class="rsvp-card">
+            <p class="eyebrow">Wedding RSVP</p>
+            <h1>We’d love to celebrate with you</h1>
+            <p class="subheading">
+                Please let us know if you can join us for our special day.
+            </p>
+
+            <form class="rsvp-form" data-netlify="true" method="POST" name="rsvp">
+                <label>
+                    Full name
+                    <input type="text" name="name" placeholder="Your name" required />
+                </label>
+
+                <label>
+                    Email address
+                    <input type="email" name="email" placeholder="your@email.com" required />
+                </label>
+
+                <label>
+                    Will you attend?
+                    <select name="attendance" required>
+                        <option value="">Select an option</option>
+                        <option value="yes">Absolutely, I’ll be there</option>
+                        <option value="no">Regretfully, I can’t make it</option>
+                    </select>
+                </label>
+
+                <label>
+                    Number of guests
+                    <input type="number" name="guests" min="1" max="4" value="1" />
+                </label>
+
+                <label>
+                    I promise to dance if the DJ plays
+                    <input type="text" name="dance" placeholder="The song you want to dance to" />
+                </label>
+
+                <label>
+                    Notes
+                    <textarea name="notes" rows="4" placeholder="Any dietary needs or questions?"></textarea>
+                </label>
+
+                <button type="submit">Send RSVP</button>
+            </form>
+
+        </section>
+    </main>
+</Layout>
+
+<style>
+    :global(body) {
+        margin: 0;
+        background: #f7f3ee;
+        color: #2d251f;
+        font-family: "Inter", "Segoe UI", sans-serif;
+    }
+
+    .rsvp-page {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 2rem 1rem;
+    }
+
+    .rsvp-card {
+        width: min(100%, 640px);
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow: 0 20px 45px rgba(45, 37, 31, 0.12);
+    }
+
+    .eyebrow {
+        margin: 0 0 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #b07b4d;
+    }
+
+    h1 {
+        margin: 0 0 0.75rem;
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        line-height: 1.1;
+    }
+
+    .subheading {
+        margin: 0 0 1.5rem;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #6b625c;
+    }
+
+    .rsvp-form {
+        display: grid;
+        gap: 1rem;
+    }
+
+    label {
+        display: grid;
+        gap: 0.45rem;
+        font-weight: 600;
+        color: #3e342e;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        border: 1px solid #e1d8ce;
+        border-radius: 12px;
+        padding: 0.8rem 0.95rem;
+        font: inherit;
+        background: #fcfaf8;
+        box-sizing: border-box;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: 2px solid #d8a77b;
+        border-color: #d8a77b;
+    }
+
+    button {
+        margin-top: 0.5rem;
+        border: 0;
+        border-radius: 999px;
+        padding: 0.9rem 1.2rem;
+        font: inherit;
+        font-weight: 700;
+        color: white;
+        background: linear-gradient(135deg, #b07b4d, #8c5e36);
+        cursor: pointer;
+    }
+
+    button:hover {
+        opacity: 0.95;
+    }
+</style>
