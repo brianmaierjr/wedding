@@ -1,10 +1,17 @@
 ---
+export interface CardButton {
+    label: string;
+    href: string;
+    target?: string;
+}
+
 export interface Props {
     image?: string;
     imageAlt?: string;
     title: string;
     subtitle?: string;
     description?: string;
+    buttons?: CardButton[];
     children?: any;
 }
 
@@ -14,8 +21,13 @@ const {
     title,
     subtitle,
     description,
+    buttons = [],
     children,
 } = Astro.props;
+
+const actionLinks = buttons
+    .filter((button) => button?.label && button?.href)
+    .slice(0, 2);
 ---
 
 <div
@@ -46,5 +58,19 @@ const {
             <p class="card__body mt-3 text-base leading-snug">{description}</p>
         )
     }
+    {actionLinks.length > 0 && (
+        <div class="card__actions mt-6 flex flex-wrap justify-center gap-3">
+            {actionLinks.map((button) => (
+                <a
+                    href={button.href}
+                    target={button.target || undefined}
+                    rel={button.target === "_blank" ? "noopener noreferrer" : undefined}
+                    class="text-[#5f8575] inline-flex items-center rounded-full border border-[#5f8575] px-4 py-2 text-sm font-semibold text-[#4e3827] transition duration-200 hover:bg-[#d4dfc7]"
+                >
+                    {button.label}
+                </a>
+            ))}
+        </div>
+    )}
     {children && <div class="card__footer mt-4 text-base">{children}</div>}
 </div>

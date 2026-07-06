@@ -34,11 +34,18 @@ export interface ScheduleContent {
   events: ScheduleEvent[];
 }
 
+export interface CardButton {
+  label: string;
+  href: string;
+  target?: string;
+}
+
 export interface CardContent {
   imageAlt?: string;
   title: string;
   description?: string;
   href?: string;
+  buttons?: CardButton[];
 }
 
 export interface GalleryImage {

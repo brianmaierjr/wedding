@@ -4,6 +4,7 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="RSVP | Said Yes">
     <main class="rsvp-page">
+        <a href="/" class="back absolute top-4 left-4">← Back to Home</a>
         <section class="rsvp-card">
             <p class="eyebrow">Wedding RSVP</p>
             <h1>We’d love to celebrate with you!</h1>
@@ -65,7 +66,7 @@ import Layout from "../layouts/Layout.astro";
         min-height: 100vh;
         display: grid;
         place-items: center;
-        padding: 2rem 1rem;
+        padding: 4rem 1rem;
     }
 
     .rsvp-card {
@@ -76,13 +77,18 @@ import Layout from "../layouts/Layout.astro";
         box-shadow: 0 20px 45px rgba(45, 37, 31, 0.12);
     }
 
-    .eyebrow {
+    .eyebrow, .back {
         margin: 0 0 0.5rem;
         text-transform: uppercase;
         letter-spacing: 0.2em;
         font-size: 0.8rem;
         font-weight: 700;
         color: #b07b4d;
+    }
+
+    .back {
+        color: #6b625c;
+        letter-spacing: 0;
     }
 
     h1 {

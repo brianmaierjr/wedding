@@ -92,11 +92,18 @@ cards:
   - imageAlt: "RSVP"
     title: "RSVP"
     description: "Let us know if you’ll be joining our special day! No later than Sep. 10th please!"
-    href: "/rsvp"
+    buttons:
+      - label: "RSVP Now"
+        href: "/rsvp"
   - imageAlt: "Wishlist"
     title: "Wishlist"
     description: "See our gift wishlist and help us start our new chapter."
-    href: "/wishlist"
+    buttons:
+      - label: "Williams Sonoma"
+        href: "https://www.williams-sonoma.com/registry/fxrgznzs29/registry-list.html"
+        target: "_blank"
+      - label: "Amazon"
+        href: "https://www.amazon.com/wedding/guest-view/10MW9F5JGC287"
 
 countdown:
   label: "Wedding Weekend Countdown"
