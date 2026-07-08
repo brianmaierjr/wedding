@@ -39,7 +39,7 @@ schedule:
         - "Guests seated by 4:15 PM"
         - "Ceremony begins promptly at 4:30 PM"
         - "Travel to the reception — 10 minutes"
-    - number: "03"
+    - number: "02"
       label: "Dinner"
       title: "Reception"
       description: >
@@ -49,7 +49,7 @@ schedule:
         - "Grand entrance of the new Mr. and Mrs. Maier"
         - "Welcome blessing and dinner buffet begins at 6:15 PM"
         - "Toasts and Cake Cutting"
-    - number: "04"
+    - number: "03"
       label: "Celebration"
       title: "First Dance & Party"
       description: >
@@ -58,7 +58,7 @@ schedule:
         - "First dance after Cake Cutting"
         - "Dance flooor opens to entire party"
         - "Last dance at 9:20 PM"
-    - number: "05"
+    - number: "04"
       label: "Farewell"
       title: "Bright Send-Off"
       description: >
