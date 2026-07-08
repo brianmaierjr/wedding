@@ -9,17 +9,13 @@ const { cards = [] } = getEventData();
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         {
             cards.map((card) => (
-                <a
-                    href={card.href}
-                    class="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-                >
-                    <Card
-                        image={card.image}
-                        imageAlt={card.imageAlt}
-                        title={card.title}
-                        description={card.description}
-                    />
-                </a>
+                <Card
+                    image={card.image}
+                    imageAlt={card.imageAlt}
+                    title={card.title}
+                    description={card.description}
+                    buttons={card.buttons}
+                />
             ))
         }
     </div>
