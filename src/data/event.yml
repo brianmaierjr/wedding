@@ -2,7 +2,7 @@ hero:
   tagline: "The wedding of"
   title: "Elizabeth & Brian"
   description: >
-    Join us for a joyful October evening in the city we call home, surrounded by wonderful food, music, laughter, and the people who have shaped our lives.
+    Thank you for joining us in celebrating our love and the start of our forever. We are so excited to have shared this special day with you!
   weekday: "Saturday"
   dateDisplay: "10 · 10 · 2026"
   location: "Louisville, KY • USA"
@@ -69,9 +69,7 @@ schedule:
 
 gallery:
   eyebrow: "Gallery"
-  title: "Scroll through the memories"
-  description: >
-    A curated strip of the moments we never want to forget- from our first travels together to the many more adventures ahead.
+  title: "Memories captured from the magical night we said 'I do'"
   images:
     - asset: "wedshots/IMG_7079.JPG"
       alt: "Mt. Adams overlook"

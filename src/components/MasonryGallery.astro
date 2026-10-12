@@ -1,0 +1,423 @@
+---
+import { Image, getImage } from "astro:assets";
+import type { ImageMetadata } from "astro:assets";
+import { getEventData } from "../data/eventData";
+
+interface Props {
+    /** Folder inside `src/assets` to pull images from. */
+    folder?: string;
+    /** Max number of masonry columns on large screens. */
+    columns?: number;
+    /** Filenames inside the folder to skip, e.g. ["our-story.jpg"]. */
+    exclude?: string[];
+    eyebrow?: string;
+    title?: string;
+    description?: string;
+}
+
+const { gallery: galleryContent } = getEventData();
+
+const {
+    folder = "wedding-day",
+    columns = 3,
+    exclude = [],
+    eyebrow = galleryContent.eyebrow,
+    title = galleryContent.title,
+    description = galleryContent.description,
+} = Astro.props;
+
+// Every image in src/assets is picked up at build time; the folder prop filters
+// them down. The glob pattern has to stay a literal, so it can't be narrowed by
+// the prop directly.
+const imageModules = import.meta.glob(
+    "../assets/**/*.{jpg,JPG,jpeg,JPEG,png,PNG,webp,WEBP,avif,AVIF}",
+    {
+        eager: true,
+        import: "default",
+    },
+) as Record<string, ImageMetadata>;
+
+const folderPrefix = `../assets/${folder.replace(/^\/|\/$/g, "")}/`;
+
+// Captions come from event.yml when a matching entry exists, keyed by filename
+// so renaming a yml path doesn't silently drop the caption.
+const captionsByFile = new Map(
+    (galleryContent.images ?? []).map((image) => [
+        image.asset.split("/").pop(),
+        image.alt,
+    ]),
+);
+
+const galleryImages = Object.entries(imageModules)
+    .filter(([path]) => path.startsWith(folderPrefix))
+    .map(([path, src]) => ({ file: path.slice(folderPrefix.length), src }))
+    .filter(({ file }) => !file.includes("/") && !exclude.includes(file))
+    .sort((a, b) => a.file.localeCompare(b.file, undefined, { numeric: true }))
+    .map(({ file, src }, index) => {
+        const caption = captionsByFile.get(file);
+
+        return {
+            src,
+            caption,
+            alt: caption ?? `${title} photo ${index + 1}`,
+        };
+    });
+
+// Pre-render the expanded version of each photo so the lightbox swaps to an
+// optimized file instead of the multi-megabyte original.
+const lightboxSources = await Promise.all(
+    galleryImages.map((image) =>
+        getImage({
+            src: image.src,
+            format: "webp",
+            quality: 85,
+            width: Math.min(image.src.width, 2000),
+        }),
+    ),
+);
+---
+
+<section
+    data-masonry-gallery
+    style="
+        background-color: var(--color-background); color: var(--color-secondary);
+    "
+>
+    <div class="mx-auto w-full max-w-6xl px-6 py-24">
+        <header class="mb-16 max-w-3xl">
+            <p
+                class="text-sm uppercase tracking-[0.35em]"
+                style="color: var(--color-secondary); opacity: 0.6;"
+            >
+                {eyebrow}
+            </p>
+            <h2
+                class="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl"
+                style="color: var(--color-primary);"
+            >
+                {title}
+            </h2>
+            <p
+                class="mt-6 text-lg"
+                style="color: var(--color-secondary); opacity: 0.75;"
+            >
+                {description}
+            </p>
+        </header>
+
+        {
+            galleryImages.length === 0 && (
+                <p class="text-lg" style="color: var(--color-secondary); opacity: 0.6;">
+                    No images found in <code>src/assets/{folder}</code>.
+                </p>
+            )
+        }
+
+        <div
+            class="columns-1 gap-6 sm:columns-2 lg:columns-[var(--gallery-columns)]"
+            style={`--gallery-columns: ${columns};`}
+        >
+            {
+                galleryImages.map((image, index) => (
+                    <figure class="mb-6 break-inside-avoid">
+                        <button
+                            type="button"
+                            data-gallery-item
+                            data-index={index}
+                            data-full={lightboxSources[index].src}
+                            data-caption={image.caption ?? ""}
+                            data-alt={image.alt}
+                            class="group relative block w-full cursor-zoom-in overflow-hidden rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-4"
+                            style="
+                                background: color-mix(in srgb, var(--color-secondary) 5%, transparent);
+                                outline-color: var(--color-secondary);
+                            "
+                            aria-label={`Expand photo: ${image.alt}`}
+                        >
+                            <Image
+                                src={image.src}
+                                alt={image.alt}
+                                widths={[400, 800, 1200]}
+                                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                                format="webp"
+                                loading="lazy"
+                                decoding="async"
+                                class="block w-full transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                            />
+                            {image.caption && (
+                                <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 translate-y-full bg-black/55 px-5 py-4 text-left text-sm transition-transform duration-300 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0">
+                                    {image.caption}
+                                </figcaption>
+                            )}
+                        </button>
+                    </figure>
+                ))
+            }
+        </div>
+    </div>
+
+    <dialog
+        data-lightbox
+        class="gallery-lightbox"
+        aria-label="Photo gallery viewer"
+    >
+        <div class="relative flex h-full w-full flex-col items-center justify-center">
+            <figure class="flex max-h-full flex-col items-center gap-4">
+                <img
+                    data-lightbox-image
+                    src=""
+                    alt=""
+                    class="max-h-[80vh] max-w-[92vw] rounded-2xl object-contain shadow-2xl"
+                />
+                <figcaption
+                    data-lightbox-caption
+                    class="max-w-[92vw] text-center text-sm"
+                    style="color: var(--color-secondary);"
+                >
+                </figcaption>
+            </figure>
+
+            <p
+                data-lightbox-counter
+                class="absolute top-5 left-6 text-sm tabular-nums"
+                style="color: var(--color-secondary); opacity: 0.7;"
+            >
+            </p>
+
+            <button
+                type="button"
+                data-lightbox-close
+                class="gallery-lightbox__control absolute top-4 right-4"
+                aria-label="Close gallery"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true"
+                    ><path
+                        d="M6 6l12 12M18 6L6 18"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        fill="none"></path></svg
+                >
+            </button>
+
+            <button
+                type="button"
+                data-lightbox-prev
+                class="gallery-lightbox__control absolute top-1/2 left-3 -translate-y-1/2 sm:left-6"
+                aria-label="Previous photo"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true"
+                    ><path
+                        d="M15 5l-7 7 7 7"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        fill="none"></path></svg
+                >
+            </button>
+
+            <button
+                type="button"
+                data-lightbox-next
+                class="gallery-lightbox__control absolute top-1/2 right-3 -translate-y-1/2 sm:right-6"
+                aria-label="Next photo"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true"
+                    ><path
+                        d="M9 5l7 7-7 7"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        fill="none"></path></svg
+                >
+            </button>
+        </div>
+    </dialog>
+</section>
+
+<style>
+    .gallery-lightbox {
+        width: 100vw;
+        max-width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--color-secondary);
+    }
+
+    .gallery-lightbox::backdrop {
+        background: color-mix(in srgb, var(--color-primary-dark) 92%, black);
+        backdrop-filter: blur(6px);
+    }
+
+    .gallery-lightbox[open] img[data-lightbox-image] {
+        animation: gallery-lightbox-in 0.28s cubic-bezier(0.2, 0.9, 0.2, 1);
+    }
+
+    @keyframes gallery-lightbox-in {
+        from {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .gallery-lightbox__control {
+        display: grid;
+        place-items: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 9999px;
+        color: var(--color-secondary);
+        background: color-mix(in srgb, var(--color-secondary) 12%, transparent);
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease;
+        cursor: pointer;
+    }
+
+    .gallery-lightbox__control:hover {
+        background: color-mix(in srgb, var(--color-secondary) 24%, transparent);
+    }
+
+    .gallery-lightbox__control:focus-visible {
+        outline: 2px solid var(--color-secondary);
+        outline-offset: 3px;
+    }
+
+    .gallery-lightbox__control svg {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .gallery-lightbox[open] img[data-lightbox-image] {
+            animation: none;
+        }
+
+        .gallery-lightbox__control,
+        [data-gallery-item] img,
+        [data-gallery-item] figcaption {
+            transition: none;
+        }
+    }
+</style>
+
+<script>
+    // One script per page handles every gallery instance.
+    document
+        .querySelectorAll<HTMLElement>("[data-masonry-gallery]")
+        .forEach((root) => {
+            const dialog = root.querySelector<HTMLDialogElement>("[data-lightbox]");
+            const image = root.querySelector<HTMLImageElement>("[data-lightbox-image]");
+            const caption = root.querySelector<HTMLElement>("[data-lightbox-caption]");
+            const counter = root.querySelector<HTMLElement>("[data-lightbox-counter]");
+            const triggers = Array.from(
+                root.querySelectorAll<HTMLButtonElement>("[data-gallery-item]"),
+            );
+
+            if (!dialog || !image || !caption || !counter || triggers.length === 0) {
+                return;
+            }
+
+            const photos = triggers.map((trigger) => ({
+                full: trigger.dataset.full ?? "",
+                alt: trigger.dataset.alt ?? "",
+                caption: trigger.dataset.caption ?? "",
+            }));
+
+            const single = photos.length === 1;
+            root.querySelector<HTMLElement>("[data-lightbox-prev]")?.toggleAttribute("hidden", single);
+            root.querySelector<HTMLElement>("[data-lightbox-next]")?.toggleAttribute("hidden", single);
+
+            let current = 0;
+
+            const preload = (index: number) => {
+                const photo = photos[(index + photos.length) % photos.length];
+                if (photo) new Image().src = photo.full;
+            };
+
+            const show = (index: number) => {
+                current = (index + photos.length) % photos.length;
+                const photo = photos[current];
+
+                image.src = photo.full;
+                image.alt = photo.alt;
+                caption.textContent = photo.caption;
+                caption.hidden = photo.caption.length === 0;
+                counter.textContent = `${current + 1} / ${photos.length}`;
+
+                // Replay the entrance animation on each change.
+                image.style.animation = "none";
+                void image.offsetWidth;
+                image.style.removeProperty("animation");
+
+                preload(current + 1);
+                preload(current - 1);
+            };
+
+            let isOpen = false;
+
+            const open = (index: number) => {
+                show(index);
+                dialog.showModal();
+                document.documentElement.style.overflow = "hidden";
+                isOpen = true;
+            };
+
+            // Restore the page scroll and send focus back to the thumbnail that
+            // was opened. Some Chrome builds don't fire `close` on a dialog, so
+            // `toggle` is wired up alongside it; the handler runs once either way.
+            const handleClosed = () => {
+                if (!isOpen) return;
+                isOpen = false;
+                document.documentElement.style.removeProperty("overflow");
+                triggers[current]?.focus({ preventScroll: true });
+            };
+
+            dialog.addEventListener("close", handleClosed);
+            dialog.addEventListener("toggle", (event) => {
+                if ("newState" in event && event.newState === "closed") {
+                    handleClosed();
+                }
+            });
+
+            triggers.forEach((trigger, index) => {
+                trigger.addEventListener("click", () => open(index));
+            });
+
+            root.querySelector("[data-lightbox-close]")?.addEventListener("click", () =>
+                dialog.close(),
+            );
+            root.querySelector("[data-lightbox-prev]")?.addEventListener("click", () =>
+                show(current - 1),
+            );
+            root.querySelector("[data-lightbox-next]")?.addEventListener("click", () =>
+                show(current + 1),
+            );
+
+            // Clicking the empty space around the photo closes the viewer.
+            dialog.addEventListener("click", (event) => {
+                if (!(event.target instanceof Element)) return;
+                if (!event.target.closest("figure, button")) dialog.close();
+            });
+
+            dialog.addEventListener("keydown", (event) => {
+                if (event.key === "ArrowRight") {
+                    event.preventDefault();
+                    show(current + 1);
+                } else if (event.key === "ArrowLeft") {
+                    event.preventDefault();
+                    show(current - 1);
+                }
+            });
+        });
+</script>
